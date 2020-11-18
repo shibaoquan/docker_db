@@ -1,2 +1,5 @@
 /data
 *.pyc
+*.l
+*.iml
+.idea
