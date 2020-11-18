@@ -1,0 +1,57 @@
+version: '2'
+services:
+        
+  db_mysql:
+    image: "mysql:5.7.24"
+    container_name: "mysql"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/data-mysql/:/var/lib/mysql
+
+  db_postgres:
+    image: "postgres:9.5"
+    container_name: "postgres"
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123456
+
+    volumes:
+      - ./data/data-postgres:/usr/local/etc/postgre
+
+  db_redis:
+    image: redis
+    container_name: redis
+    restart: always
+    command: redis-server --requirepass 123456
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/data-redis/:/usr/local/etc/redis
+
+  mongodb:
+    image: mongo
+    container_name: "mongodb"
+    restart: always
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/data/logs
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/data-mongodb/:/data/db
+      - ./logs/logs-mongodb:/data/logs
